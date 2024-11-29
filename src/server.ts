@@ -2,6 +2,7 @@ import { createServer } from 'http';
 import { Server, Socket } from 'socket.io';
 import express from 'express';
 import dotenv from 'dotenv';
+import https from 'https';
 
 dotenv.config();
 
@@ -118,4 +119,9 @@ io.on('connection', (socket: Socket) => {
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
   console.log(`Socket server running on port ${PORT}`);
-}); 
+});
+
+// Keep-alive ping
+setInterval(() => {
+  https.get(`https://${process.env.PROJECT_DOMAIN}.glitch.me/`);
+}, 280000); // Every 4.6 minutes 
